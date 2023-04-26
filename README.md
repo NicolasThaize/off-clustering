@@ -1,6 +1,9 @@
 # off-clustering
 OpenFoodFact data clustering. Entire workflow.
 
+# App description
+**/data** : Contains stored data if needed <br>
+**/model_saver** : A module which saves, get and run fitted models
 
 # Setup
 Requirements:
@@ -16,3 +19,4 @@ Requirements:
 > conda create --name off-clustering <br>
 > conda activate off-clustering <br>
 > pip install -r requirements.txt
+
