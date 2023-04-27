@@ -33,3 +33,5 @@ Line<br>
 becomes<br>
 ```from .data_loader import get_data```<br>
 
+# Sources
+**teaching_ml_2023** is from [this repository](https://github.com/HerySon/teaching_ml_2023/).
