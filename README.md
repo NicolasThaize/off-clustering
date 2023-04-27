@@ -13,10 +13,23 @@ Requirements:
 
 ## 1. Install dependencies
 ### 1.1 Using makefile
-> make install-dependencies
+```make install-dependencies```
 
 ### 1.2 Using command prompt
-> conda create --name off-clustering <br>
-> conda activate off-clustering <br>
-> pip install -r requirements.txt
+1. ```conda create --name off-clustering```<br>
+2. ```conda activate off-clustering```<br>
+3. ```pip install -r requirements.txt```
+
+# Debug
+
+## If module from teching_ml_2023 cannot be imported
+Be sure that import path in the module begins by "."<br>
+Example: 
+If error is 
+> ModuleNotFoundError: No module named 'data_loader'
+
+Line<br>
+```from data_loader import get_data```<br>
+becomes<br>
+```from .data_loader import get_data```<br>
 
