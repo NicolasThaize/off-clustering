@@ -1,0 +1,3 @@
+[submodule "teaching_ml_2023"]
+	path = teaching_ml_2023
+	url = https://github.com/HerySon/teaching_ml_2023
