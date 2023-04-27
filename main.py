@@ -1,4 +1,4 @@
-from model_saver.save import myTest
+from model_saver.save import my_test
 
 print('Hello world')
-myTest()
+my_test()
