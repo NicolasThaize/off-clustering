@@ -18,7 +18,8 @@ Requirements:
 ### 1.2 Using command prompt
 1. ```conda create --name off-clustering```<br>
 2. ```conda activate off-clustering```<br>
-3. ```pip install -r requirements.txt```
+3. ```pip install -r requirements.txt```<br>
+4. ```pip install -r teaching_ml_2023/requirements.txt```
 
 # Debug
 
