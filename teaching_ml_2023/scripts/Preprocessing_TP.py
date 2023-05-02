@@ -1,4 +1,4 @@
-from data_loader import *
+from .data_loader import *
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import OneHotEncoder
@@ -238,27 +238,27 @@ class Preprocessing:
         print(info)
         return info
         
-    def preprocessing(self):
-        """Preprocess dataframe
-        Returns:
-            df (DataFrame): return preprocessed dataframe
-        @Author: Thomas PAYAN
-        """
-        self.drop_duplicated_values()
+#     def preprocessing(self):
+#         """Preprocess dataframe
+#         Returns:
+#             df (DataFrame): return preprocessed dataframe
+#         @Author: Thomas PAYAN
+#         """
+#         self.drop_duplicated_values()
 
-        self.drop_missing_values()
+#         self.drop_missing_values()
 
-        self.impute_missing_values()
+#         self.impute_missing_values()
 
-        self.categorical_features_encoding()
+#         self.categorical_features_encoding()
     
-        return self.df
+#         return self.df
         
-if __name__ == "__main__":
-    v_file_path = r"D:\Python_app\teaching_ml_2023/data/en.openfoodfacts.org.products.csv"
-    v_nrows     = 10000
+# if __name__ == "__main__":
+#     v_file_path = r"D:\Python_app\teaching_ml_2023/data/en.openfoodfacts.org.products.csv"
+#     v_nrows     = 10000
 
-    # Execute preprocessing
-    df_train = get_data(file_path=v_file_path, nrows=v_nrows)
-    df_train = Preprocessing(df_train).preprocessing()
-    print(df_train.head())
+#     # Execute preprocessing
+#     df_train = get_data(file_path=v_file_path, nrows=v_nrows)
+#     df_train = Preprocessing(df_train).preprocessing()
+#     print(df_train.head())

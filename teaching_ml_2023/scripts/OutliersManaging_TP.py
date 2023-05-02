@@ -1,4 +1,4 @@
-from data_loader import *
+from .data_loader import *
 import pandas as pd
 import numpy as np
 from collections import Counter
@@ -142,35 +142,35 @@ class OutliersManaging:
         
         return multiple_outliers   
         
-    def outliers_managing(self):
-        """Managing outliers in pandas dataframe
-        Returns:
-            df (DataFrame): return managed dataframe
-        @Author: Thomas PAYAN
-        """
-        ft_exclude = [
-                        'energy-kj_100g',
-                        'energy-kcal_100g',
-                        'ph_100g',
-                        'carbon-footprint_100g',
-                        'nutrition-score-fr_100g',
-                        'nutrition-score-uk_100g'
-                    ]
-        self.df = self.correct_features_100g(ft_exclude)
+#     def outliers_managing(self):
+#         """Managing outliers in pandas dataframe
+#         Returns:
+#             df (DataFrame): return managed dataframe
+#         @Author: Thomas PAYAN
+#         """
+#         ft_exclude = [
+#                         'energy-kj_100g',
+#                         'energy-kcal_100g',
+#                         'ph_100g',
+#                         'carbon-footprint_100g',
+#                         'nutrition-score-fr_100g',
+#                         'nutrition-score-uk_100g'
+#                     ]
+#         self.df = self.correct_features_100g(ft_exclude)
 
-        df_100g = self.get_features_endswith("_100g", ft_exclude) # Select features list
-        tukey_outliers = self.tukey_outliers(df_100g.columns.tolist()) # Detect outliers
+#         df_100g = self.get_features_endswith("_100g", ft_exclude) # Select features list
+#         tukey_outliers = self.tukey_outliers(df_100g.columns.tolist()) # Detect outliers
 
-        self.df.loc[tukey_outliers] # Show the ouliers rows
-        self.df.drop(tukey_outliers, inplace=True) # Drop outliers
+#         self.df.loc[tukey_outliers] # Show the ouliers rows
+#         self.df.drop(tukey_outliers, inplace=True) # Drop outliers
     
-        return self.df
+#         return self.df
         
-if __name__ == "__main__":
-    v_file_path = r"D:\Python_app\teaching_ml_2023/data/en.openfoodfacts.org.products.csv"
-    v_nrows     = 10000
+# if __name__ == "__main__":
+#     v_file_path = r"D:\Python_app\teaching_ml_2023/data/en.openfoodfacts.org.products.csv"
+#     v_nrows     = 10000
 
-    # Execute outliers managing
-    df_train = get_data(file_path=v_file_path, nrows=v_nrows)
-    df_train = OutliersManaging(df_train).outliers_managing()
-    print(df_train.head())
+#     # Execute outliers managing
+#     df_train = get_data(file_path=v_file_path, nrows=v_nrows)
+#     df_train = OutliersManaging(df_train).outliers_managing()
+#     print(df_train.head())
