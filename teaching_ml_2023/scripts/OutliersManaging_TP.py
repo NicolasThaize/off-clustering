@@ -2,6 +2,7 @@ from .data_loader import *
 import pandas as pd
 import numpy as np
 from collections import Counter
+from sklearn.ensemble import IsolationForest
 
 class OutliersManaging:
     """Class to managing outliers
@@ -165,7 +166,25 @@ class OutliersManaging:
         self.df.drop(tukey_outliers, inplace=True) # Drop outliers
     
         return self.df
-        
+
+    def remove_outliers_iforest(self, features, contamination=0.05):
+        """
+        Removes outliers from specified columns of the dataframe using the IsolationForest method.
+
+        Args:
+            data (pandas.DataFrame): Dataframe to modify.
+            columns (list): List of column names to modify.
+            contamination (float): Proportion of outliers expected in the dataset (default 0.05).
+
+        Returns:
+            pandas.DataFrame: Modified dataframe.
+        """
+        clf = IsolationForest(contamination=contamination, random_state=42)
+        clf.fit(self.df[features])
+        y_pred = clf.predict(self.df[features])
+        self.df = self.df[y_pred == 1]
+        return self.df
+
 if __name__ == "__main__":
     v_file_path = r"D:\Python_app\teaching_ml_2023/data/en.openfoodfacts.org.products.csv"
     v_nrows     = 10000
@@ -174,4 +193,3 @@ if __name__ == "__main__":
     df_train = get_data(file_path=v_file_path, nrows=v_nrows)
     df_train = OutliersManaging(df_train).outliers_managing()
     print(df_train.head())
-    
