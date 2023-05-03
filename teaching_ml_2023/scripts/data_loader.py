@@ -31,11 +31,11 @@ def get_data(file_path=None, nrows=None, verbose=False) -> pd.DataFrame:
     if verbose:    
         print("Reading dataset ...")  
              
-    return pd.read_csv(file_path,sep="\t", encoding="utf-8",
+    return pd.read_csv('/Users/nicolas/Documents/Cours/M1/Machine Learning/OpenFoodFact/teaching_ml_2023/data/en.openfoodfacts.org.products.csv',sep="\t", encoding="utf-8",
                        nrows=nrows, low_memory=False)
 
 
 
 if __name__ == "__main__":
-    data = get_data(file_path = "../data/en.openfoodfacts.org.products.csv", nrows=1000)
+    data = get_data(file_path = "/Users/nicolas/Documents/Cours/M1/Machine Learning/OpenFoodFact/teaching_ml_2023/data/en.openfoodfacts.org.products.csv", nrows=1000)
     print(f"data set shape is {data.shape}") 

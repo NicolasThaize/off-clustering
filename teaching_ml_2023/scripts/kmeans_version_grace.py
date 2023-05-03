@@ -57,7 +57,7 @@ def train_and_optimize_kmeans(data, feature_cols, num_clusters=3, max_clusters=1
     
     # Try different numbers of clusters and evaluate them
     scores = []
-    for i in range(2, max_clusters+1):
+    for i in range(num_clusters, max_clusters+1):
         kmeans = KMeans(n_clusters=i, random_state=42, **kwargs)
         kmeans.fit(X)
         score = silhouette_score(X, kmeans.labels_)
@@ -65,7 +65,7 @@ def train_and_optimize_kmeans(data, feature_cols, num_clusters=3, max_clusters=1
         print("K-means with {} clusters - Silhouette Score: {}".format(i, score))
     
     # Find the optimal number of clusters
-    optimal_clusters = np.argmax(scores) + 2
+    optimal_clusters = np.argmax(scores) + num_clusters
     print("Optimal number of clusters: {}".format(optimal_clusters))
     
     return optimal_clusters

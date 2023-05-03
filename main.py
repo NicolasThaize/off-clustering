@@ -1,8 +1,9 @@
 from teaching_ml_2023.scripts.data_loader import *
-from teaching_ml_2023.scripts.Filtering_TP import Filtering # Tâche 0.0
-from teaching_ml_2023.scripts.Preprocessing_TP import Preprocessing # Tâche 1.0
-from teaching_ml_2023.scripts.Scaling_TP import Scaling # Tâche 2.0
-from teaching_ml_2023.scripts.OutliersManaging_TP import OutliersManaging # Tâche 3.0
+from teaching_ml_2023.scripts.Filtering_TP import Filtering  # Tâche 0.0
+from teaching_ml_2023.scripts.Preprocessing_TP import Preprocessing  # Tâche 1.0
+from sklearn.cluster import KMeans, DBSCAN
+from model_saver.save import save_model
+
 
 def filtering(object, verbose=False):
     """Filter dataframe
@@ -10,7 +11,7 @@ def filtering(object, verbose=False):
         df (DataFrame): return filtered pandas dataframe
     @Author: Thomas PAYAN
     """
-    if verbose:    
+    if verbose:
         print("\nFiltering dataframe ...")
 
     ft_endswith = object.get_features_endswith(endswith=object.endswith)
@@ -21,15 +22,16 @@ def filtering(object, verbose=False):
 
     return object.df
 
+
 def preprocessing(object, verbose=False):
     """Preprocess dataframe
     Returns:
         df (DataFrame): return preprocessed dataframe
     @Author: Thomas PAYAN
     """
-    if verbose:    
+    if verbose:
         print("\nPreprocessing dataframe ...")
-        
+
     object.drop_duplicated_values()
 
     object.drop_missing_values()
@@ -40,13 +42,14 @@ def preprocessing(object, verbose=False):
 
     return object.df
 
+
 def scaling(object, verbose=False):
     """Scale dataframe
     Returns:
         df (DataFrame): return scaled dataframe
     @Author: Thomas PAYAN
     """
-    if verbose:    
+    if verbose:
         print("\nScaling dataframe ...")
 
     object.convert_categorical_features_to_numeric()
@@ -55,50 +58,72 @@ def scaling(object, verbose=False):
 
     return object.df
 
+
 def outliers_managing(object, ft_exclude=[], endswith=None, verbose=False):
-        """Managing outliers in pandas dataframe
+    """Managing outliers in pandas dataframe
         Returns:
             df (DataFrame): return managed dataframe
         @Author: Thomas PAYAN
         """
-        if verbose:    
-            print("\nOutliers managing dataframe ...")
+    if verbose:
+        print("\nOutliers managing dataframe ...")
 
-        object.df = object.correct_features_100g(ft_exclude)
+    object.df = object.correct_features_100g(ft_exclude)
 
-        # df_100g = object.get_features_endswith(endswith, ft_exclude) # Select features list
-        # tukey_outliers = object.tukey_outliers(df_100g.columns.tolist()) # Detect outliers
+    # df_100g = object.get_features_endswith(endswith, ft_exclude) # Select features list
+    # tukey_outliers = object.tukey_outliers(df_100g.columns.tolist()) # Detect outliers
 
-        # object.df.loc[tukey_outliers] # Show the ouliers rows
-        # object.df.drop(tukey_outliers, inplace=True) # Drop outliers
-    
-        return object.df
+    # object.df.loc[tukey_outliers] # Show the ouliers rows
+    # object.df.drop(tukey_outliers, inplace=True) # Drop outliers
+
+    return object.df
+
 
 if __name__ == "__main__":
     # Load OpenFoodFact dataset
     file_path = r"teaching_ml_2023/data/en.openfoodfacts.org.products.csv"
-    nrows     = 10000
-    df_train  = get_data(file_path, nrows, True)
+    nrows = 10000
+    df_train = get_data(file_path, nrows, True)
 
     # Execute filtering
-    endswith      = ["_t","_datetime","_url"]
-    wendswith     = ["_tags"]
+    endswith = ["_t", "_datetime", "_url"]
+    wendswith = ["_tags"]
     obj_filtering = Filtering(df_train, endswith, wendswith)
-    df_train      = filtering(obj_filtering, verbose=True)
+    df_train = filtering(obj_filtering, verbose=True)
     print(df_train.head())
 
-    ft_delete = ["code","url","creator","last_modified_by"]
+    ft_delete = ["code", "url", "creator", "last_modified_by"]
     obj_filtering.drop_features(ft_delete)
     print(df_train.head())
 
     # Excute preprocessing
-    percent             = 70
-    num_imput           = 'mean' # Numerical features imputation method
-    cat_imput           = 'mode' # Categorical features imputation method
-    label_encode_method = 'code' # Label encoding method
-    obj_preprocessing   = Preprocessing(df_train, percent, num_imput, cat_imput, label_encode_method)
-    df_train            = preprocessing(obj_preprocessing, verbose=True)
-    print(df_train.head())
+    percent = 70
+    num_imput = 'mean'  # Numerical features imputation method
+    cat_imput = 'mode'  # Categorical features imputation method
+    label_encode_method = 'code'  # Label encoding method
+    obj_preprocessing = Preprocessing(df_train, percent, num_imput, cat_imput, label_encode_method)
+    df_train = preprocessing(obj_preprocessing, verbose=True)
+
+    df_train_num = df_train.select_dtypes('number')
+    df_train_cols = df_train_num.columns
+
+    dbscan = DBSCAN(eps=0.5, min_samples=5).fit(df_train_num)
+    dbscan_predictions = dbscan.fit_predict(df_train_num)
+
+    df_results = df_train_num
+    df_results['cluster_label_dbscan'] = dbscan_predictions
+
+    kmeans = KMeans(n_clusters=82, n_init="auto").fit(df_train_num)
+    kmeans_predictions = kmeans.predict(df_train_num)
+    df_results['cluster_label_kmeans'] = kmeans_predictions
+
+    models_df = {
+        'df': df_results,
+        'kmeans_model': kmeans,
+        'dbscan_model': dbscan
+    }
+
+    save_model(models_df, "dbscan_kmeans_basic_1")
 
     # for feature in df_train.columns.tolist():
     #     print(feature)
