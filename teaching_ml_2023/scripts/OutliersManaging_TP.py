@@ -142,6 +142,23 @@ class OutliersManaging:
         multiple_outliers = list(x for x, y in outlier_indices.items() if y > number_outliers)
         
         return multiple_outliers   
+    
+    def remove_outliers_iforest(self, features=[], **kwargs):
+        """Removes outliers from specified columns of the dataframe using the IsolationForest method.
+        Args:
+            features (list): list of column names to modify
+            kwargs (any): method parameters
+        Returns:
+            df (DataFrame): return new dataframe
+        @Author: Thomas PAYAN
+        """
+        n_estimators  = kwargs.get('n_estimators', 100)
+        max_samples   = kwargs.get('max_samples', 'auto')
+        contamination = kwargs.get('contamination', 'auto')
+        isolation     = IsolationForest(n_estimators=n_estimators, max_samples=max_samples, contamination=contamination)
+        y_pred        = isolation.fit_predict(self.df[features])
+        self.df       = self.df.loc[(y_pred != 1), :]
+        return self.df
         
     def outliers_managing(self):
         """Managing outliers in pandas dataframe
@@ -165,25 +182,6 @@ class OutliersManaging:
         self.df.loc[tukey_outliers] # Show the ouliers rows
         self.df.drop(tukey_outliers, inplace=True) # Drop outliers
     
-        return self.df
-
-    def remove_outliers_iforest(self, features, contamination=0.05):
-        """
-        Removes outliers from specified columns of the dataframe using the IsolationForest method.
-
-        Args:
-            data (pandas.DataFrame): Dataframe to modify.
-            columns (list): List of column names to modify.
-            contamination (float): Proportion of outliers expected in the dataset (default 0.05).
-
-        Returns:
-            pandas.DataFrame: Modified dataframe.
-        """
-        clf = IsolationForest(contamination=contamination, random_state=42)
-        self.df[features] = clf.fit_predict(self.df[features])
-        # clf.fit(self.df[features])
-        y_pred = clf.predict(self.df[features])
-        # self.df = self.df[y_pred == 1]
         return self.df
 
 if __name__ == "__main__":
