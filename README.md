@@ -3,7 +3,9 @@ OpenFoodFact data clustering. Entire workflow.
 
 # App description
 **/data** : Contains stored data if needed <br>
-**/model_saver** : A module which saves, get and run fitted models
+**/model_saver** : A module which saves, get and run fitted models <br>
+**/predict** : Contains every prediction functions<br>
+**/metrics** : Contains metrics related functions
 
 # Setup
 Requirements:
