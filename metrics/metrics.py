@@ -25,19 +25,20 @@ def plot_evaluation_metrics(df, model):
     Indice Calinski-Harabasz : KMeans(n_clusters=2) 7.5
     Indice Davies-Bouldin : KMeans(n_clusters=2) 1.2
     """
-    
+
     # Calculer les métriques d'évaluation
     silhouette_avg = silhouette_score(df, model.labels_)
     calinski_harabasz = calinski_harabasz_score(df, model.labels_)
     davies_bouldin = davies_bouldin_score(df, model.labels_)
 
     metrics = {
-    'silhouette': silhouette_avg,
-    'calinski_harabasz': calinski_harabasz,
-    'davies_bouldin': davies_bouldin
-}
+        'silhouette': silhouette_avg,
+        'calinski_harabasz': calinski_harabasz,
+        'davies_bouldin': davies_bouldin
+    }
 
     return metrics
+
 
 def save_metrics_to_excel(iteration_name, metrics):
     """
@@ -55,9 +56,6 @@ def save_metrics_to_excel(iteration_name, metrics):
     >>> save_metrics_to_excel(iteration_name='', metrics=plot_evaluation_metrics(df, model)
     """
     file_name = 'metrics.xlsx'
-    iteration_name = input("Entrez le nom de l'itération ou 'esc' pour annuler : ")
-    if iteration_name.lower() == "esc":
-        return
 
     new_metrics = pd.DataFrame.from_dict(metrics, orient='index', columns=[iteration_name]).T
 
@@ -81,5 +79,3 @@ def save_metrics_to_excel(iteration_name, metrics):
 
     # Enregistrer les modifications
     writer._save()
-
-

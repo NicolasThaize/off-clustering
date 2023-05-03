@@ -3,6 +3,8 @@ from teaching_ml_2023.scripts.Filtering_TP import Filtering # Tâche 0.0
 from teaching_ml_2023.scripts.Preprocessing_TP import Preprocessing # Tâche 1.0
 from teaching_ml_2023.scripts.Scaling_TP import Scaling # Tâche 2.0
 from teaching_ml_2023.scripts.OutliersManaging_TP import OutliersManaging # Tâche 3.0
+from encoding.binary_encoding import binary_encode
+from predict.base import base_predict_and_save_results, base_tuning_kmeans, base_spec_hierarchical
 
 def filtering(object, verbose=False):
     """Filter dataframe
@@ -116,8 +118,15 @@ if __name__ == "__main__":
     print(df_train.head())
 
     # Execute scaling
-    method      = 'min_max'
-    obj_scaling = Scaling(df_train, method)
+    #method      = 'min_max'
+    #obj_scaling = Scaling(df_train, method)
 
-    df_train = scaling(obj_scaling, verbose=True)
+    #df_train = scaling(obj_scaling, verbose=True)
     print(df_train.head())
+
+    df_train = binary_encode(df_train, df_train.select_dtypes('object').columns.to_list())
+    print(df_train.head())
+
+    base_predict_and_save_results(df_train, "dbscan_kmeans_basic_test", "test")
+    base_tuning_kmeans(df_train, "kmeans_k_tuning_test", "test")
+    base_spec_hierarchical(df_train, "spectral_test", "test")
