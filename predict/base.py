@@ -11,29 +11,29 @@ def base_predict_and_save_results(df_train, save_name, kmeans_clusters=82, db_ep
     dbscan = DBSCAN(eps=db_eps, min_samples=db_min_samples).fit(df_train_num)
     dbscan_predictions = dbscan.fit_predict(df_train_num)
 
-    df_results = df_train_num
-    df_results['cluster_label_dbscan'] = dbscan_predictions
     #KMeans
     kmeans = KMeans(n_clusters=kmeans_clusters, n_init="auto").fit(df_train_num)
     kmeans_predictions = kmeans.predict(df_train_num)
-    df_results['cluster_label_kmeans'] = kmeans_predictions
 
     models_df = {
-        'df': df_results,
+        'df': df_train_num,
         'kmeans_model': kmeans,
         'dbscan_model': dbscan
     }
 
+    save_metrics_to_excel(iteration_name='kmeans_2', metrics=plot_evaluation_metrics(df_train_num, kmeans))
+    save_metrics_to_excel(iteration_name='dbscan_2', metrics=plot_evaluation_metrics(df_train_num, dbscan))
+
     save_model(models_df, save_name)
 
-def base_tuning_kmeans(df):
+def base_tuning_kmeans(df, save_name):
     model = kmeans(df, 21)
     value = {
         "df": df,
         "kmeans_model": model
     }
     save_metrics_to_excel(iteration_name='kmeans_tuning_1', metrics=plot_evaluation_metrics(df, model))
-    save_model(value, "kmeans_k_tuned_basic_1")
+    save_model(value, save_name)
 
 def base_spec_hierarchical(df, save_name):
     # Spectral Clustering
