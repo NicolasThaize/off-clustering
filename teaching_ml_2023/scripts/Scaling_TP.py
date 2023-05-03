@@ -59,103 +59,103 @@ class Scaling:
         Args:
             kwargs (any): method parameters
         Returns:
-            scaled_df (DataFrame): return new scaled dataframe
+            df (DataFrame): return new scaled dataframe
         @Author: Thomas PAYAN
         """
         print("\nStandard scaling")
         with_mean = kwargs.get('with_mean', True)
         with_std  = kwargs.get('with_std', True)
-        scaled_df = StandardScaler(with_mean=with_mean, with_std=with_std).fit_transform(self.df)
-        scaled_df = self.convert_numpy_to_pandas(scaled_df)
-        return scaled_df
+        scaler    = StandardScaler(with_mean=with_mean, with_std=with_std)
+        self.df   = pd.DataFrame(scaler.fit_transform(self.df), columns=self.df.columns)
+        return self.df
     
     def min_max_scaler(self, **kwargs):
         """Scale dataframe features with MinMaxScaler transformation
         Args:
             kwargs (any): method parameters
         Returns:
-            scaled_df (DataFrame): return new scaled dataframe
+            df (DataFrame): return new scaled dataframe
         @Author: Thomas PAYAN
         """
         print("\nMin-max scaling")
         feature_range = kwargs.get('feature_range', (0,1))
-        scaled_df     = MinMaxScaler(feature_range=feature_range).fit_transform(self.df)
-        scaled_df     = self.convert_numpy_to_pandas(scaled_df)
-        return scaled_df
+        scaler        = MinMaxScaler(feature_range=feature_range)
+        self.df       = pd.DataFrame(scaler.fit_transform(self.df), columns=self.df.columns)
+        return self.df
     
     def max_abs_scaler(self, **kwargs):
         """Scale dataframe features with MaxAbsScaler transformation
         Args:
             kwargs (any): method parameters
         Returns:
-            scaled_df (DataFrame): return new scaled dataframe
+            df (DataFrame): return new scaled dataframe
         @Author: Thomas PAYAN
         """
         print("\nMax-abs scaling")
-        copy      = kwargs.get('copy', True)
-        scaled_df = MaxAbsScaler(copy=copy).fit_transform(self.df)
-        scaled_df = self.convert_numpy_to_pandas(scaled_df)
-        return scaled_df
+        copy    = kwargs.get('copy', True)
+        scaler  = MaxAbsScaler(copy=copy)
+        self.df = pd.DataFrame(scaler.fit_transform(self.df), columns=self.df.columns)
+        return self.df
     
     def robust_scaler(self, **kwargs):
         """Scale dataframe features with RobustScaler transformation
         Args:
             kwargs (any): method parameters
         Returns:
-            scaled_df (DataFrame): return new scaled dataframe
+            df (DataFrame): return new scaled dataframe
         @Author: Thomas PAYAN
         """
         print("\nRobust scaling")
         with_centering = kwargs.get('with_centering', True)
         with_scaling   = kwargs.get('with_scaling', True)
         quantile_range = kwargs.get('quantile_range', (25.0, 75.0))
-        scaled_df      = RobustScaler(with_centering=with_centering, with_scaling=with_scaling, quantile_range=quantile_range).fit_transform(self.df)
-        scaled_df      = self.convert_numpy_to_pandas(scaled_df)
-        return scaled_df
+        scaler         = RobustScaler(with_centering=with_centering, with_scaling=with_scaling, quantile_range=quantile_range)
+        self.df        = pd.DataFrame(scaler.fit_transform(self.df), columns=self.df.columns)
+        return self.df
     
     def power_transformation(self, **kwargs):
         """Scale dataframe features with Power transformation
         Args:
             kwargs (any): method parameters
         Returns:
-            scaled_df (DataFrame): return new scaled dataframe
+            df (DataFrame): return new scaled dataframe
         @Author: Thomas PAYAN
         """
         print("\nPower transformation ("+method+")")
         method      = kwargs.get('method', 'yeo-johnson')
         standardize = kwargs.get('standardize', True)
-        scaled_df   = PowerTransformer(method=method, standardize=standardize).fit_transform(self.df)
-        scaled_df   = self.convert_numpy_to_pandas(scaled_df)
-        return scaled_df
+        scaler      = PowerTransformer(method=method, standardize=standardize)
+        self.df     = pd.DataFrame(scaler.fit_transform(self.df), columns=self.df.columns)
+        return self.df
     
     def quantile_transformation(self, **kwargs):
         """Scale dataframe features with Quantile transformation
         Args:
             kwargs (any): method parameters
         Returns:
-            scaled_df (DataFrame): return new scaled dataframe
+            df (DataFrame): return new scaled dataframe
         @Author: Thomas PAYAN
         """
         print("\nQuantile transformation ("+output_distribution+")")
         n_quantiles         = kwargs.get('n_quantiles', 200)
         output_distribution = kwargs.get('output_distribution', 'yeo-johnson')
-        scaled_df           = QuantileTransformer(n_quantiles=n_quantiles, output_distribution=output_distribution).fit_transform(self.df)
-        scaled_df           = self.convert_numpy_to_pandas(scaled_df)
-        return scaled_df
+        scaler              = QuantileTransformer(n_quantiles=n_quantiles, output_distribution=output_distribution)
+        self.df             = pd.DataFrame(scaler.fit_transform(self.df), columns=self.df.columns)
+        return self.df
     
     def normalize_transformation(self, **kwargs):
         """Scale dataframe features with Normalizer transformation
         Args:
             kwargs (any): method parameters
         Returns:
-            scaled_df (DataFrame): return new scaled dataframe
+            df (DataFrame): return new scaled dataframe
         @Author: Thomas PAYAN
         """
         print("\nNormalize transformation")
-        norm      = kwargs.get('norm', "l2")
-        scaled_df = Normalizer(norm=norm).fit_transform(self.df)
-        scaled_df = self.convert_numpy_to_pandas(scaled_df)
-        return scaled_df
+        norm    = kwargs.get('norm', "l2")
+        scaler  = Normalizer(norm=norm)
+        self.df = pd.DataFrame(scaler.fit_transform(self.df), columns=self.df.columns)
+        return self.df
 
     def scaling_features(self, **kwargs):
         """Scale dataframe features
@@ -185,23 +185,23 @@ class Scaling:
             case _:
                 print("\nWarning : select another method !")
 
-#     def scaling(self):
-#         """Scale dataframe
-#         Returns:
-#             df (DataFrame): return scaled dataframe
-#         @Author: Thomas PAYAN
-#         """
-#         self.convert_categorical_features_to_numeric()
+    def scaling(self):
+        """Scale dataframe
+        Returns:
+            df (DataFrame): return scaled dataframe
+        @Author: Thomas PAYAN
+        """
+        self.convert_categorical_features_to_numeric()
 
-#         self.scaling_features()
+        self.scaling_features()
 
-#         return self.df
+        return self.df
 
-# if __name__ == "__main__":
-#     v_file_path = r"D:\Python_app\teaching_ml_2023/data/en.openfoodfacts.org.products.csv"
-#     v_nrows     = 10000
+if __name__ == "__main__":
+    v_file_path = r"D:\Python_app\teaching_ml_2023/data/en.openfoodfacts.org.products.csv"
+    v_nrows     = 10000
 
-#     # Execute scaling
-#     df_train = get_data(file_path=v_file_path, nrows=v_nrows)    
-#     df_train = Scaling(df_train).scaling()
-#     print(df_train.head())
+    # Execute scaling
+    df_train = get_data(file_path=v_file_path, nrows=v_nrows)    
+    df_train = Scaling(df_train).scaling()
+    print(df_train.head())
