@@ -185,23 +185,23 @@ class Scaling:
             case _:
                 print("\nWarning : select another method !")
 
-#     def scaling(self):
-#         """Scale dataframe
-#         Returns:
-#             df (DataFrame): return scaled dataframe
-#         @Author: Thomas PAYAN
-#         """
-#         self.convert_categorical_features_to_numeric()
+    def scaling(self):
+        """Scale dataframe
+        Returns:
+            df (DataFrame): return scaled dataframe
+        @Author: Thomas PAYAN
+        """
+        self.convert_categorical_features_to_numeric()
 
-#         self.scaling_features()
+        self.scaling_features()
 
-#         return self.df
+        return self.df
 
-# if __name__ == "__main__":
-#     v_file_path = r"D:\Python_app\teaching_ml_2023/data/en.openfoodfacts.org.products.csv"
-#     v_nrows     = 10000
+if __name__ == "__main__":
+    v_file_path = r"D:\Python_app\teaching_ml_2023/data/en.openfoodfacts.org.products.csv"
+    v_nrows     = 10000
 
-#     # Execute scaling
-#     df_train = get_data(file_path=v_file_path, nrows=v_nrows)    
-#     df_train = Scaling(df_train).scaling()
-#     print(df_train.head())
+    # Execute scaling
+    df_train = get_data(file_path=v_file_path, nrows=v_nrows)    
+    df_train = Scaling(df_train).scaling()
+    print(df_train.head())

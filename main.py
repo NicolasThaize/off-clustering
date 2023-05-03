@@ -93,15 +93,12 @@ if __name__ == "__main__":
 
     # Excute preprocessing
     percent             = 70
-    num_imput           = 'knn' # Numerical features imputation method
+    num_imput           = 'knn'  # Numerical features imputation method
     cat_imput           = 'mode' # Categorical features imputation method
     label_encode_method = 'code' # Label encoding method
     obj_preprocessing   = Preprocessing(df_train, percent, num_imput, cat_imput, label_encode_method)
     df_train            = preprocessing(obj_preprocessing, verbose=True)
     print(df_train.head())
-
-    # for feature in df_train.columns.tolist():
-    #     print(feature)
 
     # Execute outliers managing
     endswith   = "_100g"

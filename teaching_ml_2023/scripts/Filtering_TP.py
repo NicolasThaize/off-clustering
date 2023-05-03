@@ -85,29 +85,29 @@ class Filtering:
             print("Deleting feature : "+feature)
         return self.df.drop(features, axis=1, inplace=True)
     
-    # def filtering(self):
-    #     """Filter dataframe
-    #     Returns:
-    #         df (DataFrame): return filtered pandas dataframe
-    #     @Author: Thomas PAYAN
-    #     """
-    #     self.get_numerical_features()
+    def filtering(self):
+        """Filter dataframe
+        Returns:
+            df (DataFrame): return filtered pandas dataframe
+        @Author: Thomas PAYAN
+        """
+        self.get_numerical_features()
 
-    #     self.get_categorical_features()
+        self.get_categorical_features()
 
-    #     ft_endswith = self.get_features_endswith(endswith=self.endswith)
-    #     self.drop_features(ft_endswith)
+        ft_endswith = self.get_features_endswith(endswith=self.endswith)
+        self.drop_features(ft_endswith)
 
-    #     ft_wendswith = self.get_features_endswith(endswith=self.wendswith, invert=True)
-    #     self.drop_features(ft_wendswith)
+        ft_wendswith = self.get_features_endswith(endswith=self.wendswith, invert=True)
+        self.drop_features(ft_wendswith)
     
-#         return self.df
+        return self.df
         
-# if __name__ == "__main__":
-#     v_file_path = r"D:\Python_app\teaching_ml_2023/data/en.openfoodfacts.org.products.csv"
-#     v_nrows     = 10000
+if __name__ == "__main__":
+    v_file_path = r"D:\Python_app\teaching_ml_2023/data/en.openfoodfacts.org.products.csv"
+    v_nrows     = 10000
 
-#     # Execute filtering
-#     df_train = get_data(file_path=v_file_path, nrows=v_nrows)
-#     df_train = Filtering(df_train).filtering()
-#     print(df_train.head())
+    # Execute filtering
+    df_train = get_data(file_path=v_file_path, nrows=v_nrows)
+    df_train = Filtering(df_train).filtering()
+    print(df_train.head())
