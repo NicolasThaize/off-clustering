@@ -36,7 +36,7 @@ def preprocessing(object, verbose=False):
 
     object.impute_missing_values()
 
-    object.categorical_features_encoding()
+    # object.categorical_features_encoding()
 
     return object.df
 
@@ -84,8 +84,11 @@ if __name__ == "__main__":
     endswith      = ["_t","_datetime","_url"]
     wendswith     = ["_tags"]
     obj_filtering = Filtering(df_train, endswith, wendswith)
+    df_train      = filtering(obj_filtering, verbose=True)
+    print(df_train.head())
 
-    df_train = filtering(obj_filtering, verbose=True)
+    ft_delete = ["code","url","creator","last_modified_by"]
+    obj_filtering.drop_features(ft_delete)
     print(df_train.head())
 
     # Excute preprocessing
@@ -94,9 +97,11 @@ if __name__ == "__main__":
     cat_imput           = 'mode' # Categorical features imputation method
     label_encode_method = 'code' # Label encoding method
     obj_preprocessing   = Preprocessing(df_train, percent, num_imput, cat_imput, label_encode_method)
-
-    df_train = preprocessing(obj_preprocessing, verbose=True)
+    df_train            = preprocessing(obj_preprocessing, verbose=True)
     print(df_train.head())
+
+    # for feature in df_train.columns.tolist():
+    #     print(feature)
 
     # Execute scaling
     # method      = 'standard'
@@ -106,16 +111,16 @@ if __name__ == "__main__":
     # print(df_train.head())
 
     # Execute outliers managing
-    endswith   = "_100g"
-    ft_exclude = [
-                    'energy-kj_100g',
-                    'energy-kcal_100g',
-                    'ph_100g',
-                    'carbon-footprint_100g',
-                    'nutrition-score-fr_100g',
-                    'nutrition-score-uk_100g'
-                ]
-    obj_outliers_managing = OutliersManaging(df_train)
+    # endswith   = "_100g"
+    # ft_exclude = [
+    #                 'energy-kj_100g',
+    #                 'energy-kcal_100g',
+    #                 'ph_100g',
+    #                 'carbon-footprint_100g',
+    #                 'nutrition-score-fr_100g',
+    #                 'nutrition-score-uk_100g'
+    #             ]
+    # obj_outliers_managing = OutliersManaging(df_train)
 
-    df_train = outliers_managing(obj_outliers_managing, ft_exclude, endswith, verbose=True)
-    print(df_train.head())
+    # df_train = outliers_managing(obj_outliers_managing, ft_exclude, endswith, verbose=True)
+    # print(df_train.head())
