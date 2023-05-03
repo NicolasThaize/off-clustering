@@ -1,6 +1,10 @@
 import os
 import pandas as pd
 import sys
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.manifold import TSNE
+from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import silhouette_score, calinski_harabasz_score, davies_bouldin_score
 
 
@@ -13,7 +17,7 @@ def plot_evaluation_metrics(df, model):
     model: Un modèle de clustering entraîné avec des étiquettes (par exemple, KMeans, AgglomerativeClustering)
 
     Returns:
-    dict: Un dictionnaire contenant les métriques d'évaluation calculées
+    metrics: Un dictionnaire contenant les métriques d'évaluation calculées
 
     Examples:
     >>> metrics = plot_evaluation_metrics(data, model)
@@ -77,6 +81,5 @@ def save_metrics_to_excel(iteration_name, metrics):
 
     # Enregistrer les modifications
     writer._save()
-
 
 
