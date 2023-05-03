@@ -92,9 +92,9 @@ class Scaling:
         @Author: Thomas PAYAN
         """
         print("\nMax-abs scaling")
-        copy      = kwargs.get('copy', True)
-        scaler    = MaxAbsScaler(copy=copy)
-        self.df   = pd.DataFrame(scaler.fit_transform(self.df), columns=self.df.columns)
+        copy    = kwargs.get('copy', True)
+        scaler  = MaxAbsScaler(copy=copy)
+        self.df = pd.DataFrame(scaler.fit_transform(self.df), columns=self.df.columns)
         return self.df
     
     def robust_scaler(self, **kwargs):
@@ -124,8 +124,8 @@ class Scaling:
         print("\nPower transformation ("+method+")")
         method      = kwargs.get('method', 'yeo-johnson')
         standardize = kwargs.get('standardize', True)
-        scaler    = PowerTransformer(method=method, standardize=standardize)
-        self.df   = pd.DataFrame(scaler.fit_transform(self.df), columns=self.df.columns)
+        scaler      = PowerTransformer(method=method, standardize=standardize)
+        self.df     = pd.DataFrame(scaler.fit_transform(self.df), columns=self.df.columns)
         return self.df
     
     def quantile_transformation(self, **kwargs):
@@ -152,9 +152,9 @@ class Scaling:
         @Author: Thomas PAYAN
         """
         print("\nNormalize transformation")
-        norm      = kwargs.get('norm', "l2")
-        scaler    = Normalizer(norm=norm)
-        self.df   = pd.DataFrame(scaler.fit_transform(self.df), columns=self.df.columns)
+        norm    = kwargs.get('norm', "l2")
+        scaler  = Normalizer(norm=norm)
+        self.df = pd.DataFrame(scaler.fit_transform(self.df), columns=self.df.columns)
         return self.df
 
     def scaling_features(self, **kwargs):
