@@ -1,5 +1,6 @@
 from .data_loader import *
 import pandas as pd
+import numpy as np
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.impute import KNNImputer
@@ -100,12 +101,13 @@ class Preprocessing:
         @Author: Thomas PAYAN
         """
         print("\nKNN imputation")
+        missing_values = kwargs.get('missing_values', np.nan)
         n_neighbors    = kwargs.get('n_neighbors', 5)
         weights        = kwargs.get('weights', 'uniform')
         metric         = kwargs.get('metric', 'nan_euclidean')
-        imputer        = KNNImputer(n_neighbors=n_neighbors, weights=weights, metric=metric)
+        imputer        = KNNImputer(missing_values=missing_values, n_neighbors=n_neighbors, weights=weights, metric=metric)
         df_imputed     = pd.DataFrame(imputer.fit_transform(features), columns=features.columns)
-        print(df_imputed.head())
+        
         return df_imputed
 
     def impute_numeric_features(self, **kwargs):
@@ -120,7 +122,7 @@ class Preprocessing:
 
         match self.num_imput:
             case 'knn':
-                self.df[df_num.columns.tolist()] = self.knn_imputer(df_num, **kwargs)
+                self.df[df_num.columns] = self.knn_imputer(df_num, **kwargs)
             case 'mean':
                 for col in df_num.columns.tolist():
                     self.df[col].fillna(self.df[col].mean(), inplace=True)
@@ -132,6 +134,10 @@ class Preprocessing:
                     self.df[col].fillna(self.df[col].mode().iloc[0], inplace=True)
             case _:
                 print("\nWarning : select another method !")
+
+        # /!\ Imputation of remaining "NaN" values not processed by KNNImputer
+        for col in df_num.columns.tolist():
+            self.df[col].fillna(self.df[col].mean(), inplace=True)
 
         return self.df
                    
