@@ -1,5 +1,6 @@
 from .data_loader import *
 import pandas as pd
+import numpy as np
 
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import MaxAbsScaler
@@ -80,7 +81,7 @@ class Scaling:
         print("\nMin-max scaling")
         feature_range     = kwargs.get('feature_range', (0,1))
         scaler            = MinMaxScaler(feature_range=feature_range)
-        self.df[features] = pd.DataFrame(scaler.fit_transform(self.df[features]), columns=features)
+        self.df[features] = scaler.fit_transform(self.df[features])
         return self.df
     
     def max_abs_scaler(self, **kwargs):

@@ -180,9 +180,10 @@ class OutliersManaging:
             pandas.DataFrame: Modified dataframe.
         """
         clf = IsolationForest(contamination=contamination, random_state=42)
-        clf.fit(self.df[features])
+        self.df[features] = clf.fit_predict(self.df[features])
+        # clf.fit(self.df[features])
         y_pred = clf.predict(self.df[features])
-        self.df = self.df[y_pred == 1]
+        # self.df = self.df[y_pred == 1]
         return self.df
 
 if __name__ == "__main__":

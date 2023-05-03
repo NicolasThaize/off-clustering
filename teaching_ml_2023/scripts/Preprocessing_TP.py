@@ -107,7 +107,7 @@ class Preprocessing:
         metric         = kwargs.get('metric', 'nan_euclidean')
         imputer        = KNNImputer(missing_values=missing_values, n_neighbors=n_neighbors, weights=weights, metric=metric)
         df_imputed     = pd.DataFrame(imputer.fit_transform(features), columns=features.columns)
-        
+
         return df_imputed
 
     def impute_numeric_features(self, **kwargs):

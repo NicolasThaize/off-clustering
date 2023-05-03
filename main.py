@@ -69,7 +69,6 @@ def outliers_managing(object, ft_exclude=[], endswith=None, verbose=False):
 
         # print(object.df.describe())
         # df_100g   = object.get_features_endswith(endswith, ft_exclude) # Select features list
-        # object.df = object.remove_outliers_tukey(df_100g.columns) # Detect outliers
         # object.df = object.remove_outliers_iforest(df_100g.columns.tolist()) # Detect outliers
         # print(object.df.describe())
     
@@ -115,10 +114,12 @@ if __name__ == "__main__":
 
     df_train = outliers_managing(obj_outliers_managing, ft_exclude, endswith, verbose=True)
     print(df_train.head())
-
+    
     # Execute scaling
     method      = 'min_max'
     obj_scaling = Scaling(df_train, method)
 
     df_train = scaling(obj_scaling, verbose=True)
     print(df_train.head())
+
+    print(df_train.isna().sum())
