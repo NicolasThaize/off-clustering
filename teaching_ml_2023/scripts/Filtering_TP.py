@@ -1,4 +1,4 @@
-from data_loader import *
+from .data_loader import *
 import pandas as pd
 
 class Filtering:

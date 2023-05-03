@@ -1,4 +1,4 @@
-from data_loader import *
+from .data_loader import *
 import pandas as pd
 import numpy as np
 from collections import Counter
@@ -174,3 +174,4 @@ if __name__ == "__main__":
     df_train = get_data(file_path=v_file_path, nrows=v_nrows)
     df_train = OutliersManaging(df_train).outliers_managing()
     print(df_train.head())
+    

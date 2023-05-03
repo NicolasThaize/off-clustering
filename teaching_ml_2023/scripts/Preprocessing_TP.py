@@ -1,7 +1,8 @@
-from data_loader import *
+from .data_loader import *
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import OneHotEncoder
+from sklearn.impute import KNNImputer
 
 class Preprocessing:
     """Class to preprocessing pandas dataframe
@@ -88,8 +89,26 @@ class Preprocessing:
         self.df.drop(list_calc_null, axis=1, inplace=True)
         print("\nNumber features after droping when %s percent of values are NULL : %s" % (self.percent, len(self.df.columns)))
         return self.df
+    
+    def knn_imputer(self, features, **kwargs):
+        """Impute KNNImputer features using KNNImputer
+        Args:
+            features (list): list of features to impute
+            kwargs (any): method parameters
+        Returns:
+            df (DataFrame): return dataframe with numerical features imputated
+        @Author: Thomas PAYAN
+        """
+        print("\nKNN imputation")
+        n_neighbors    = kwargs.get('n_neighbors', 5)
+        weights        = kwargs.get('weights', 'uniform')
+        metric         = kwargs.get('metric', 'nan_euclidean')
+        imputer        = KNNImputer(n_neighbors=n_neighbors, weights=weights, metric=metric)
+        df_imputed     = pd.DataFrame(imputer.fit_transform(features), columns=features.columns)
+        print(df_imputed.head())
+        return df_imputed
 
-    def impute_numeric_features(self):
+    def impute_numeric_features(self, **kwargs):
         """Impute numerical features missing values
         Returns:
             df (DataFrame): return dataframe with numerical features imputed
@@ -100,6 +119,8 @@ class Preprocessing:
         df_num = self.df.select_dtypes(include=["number"])
 
         match self.num_imput:
+            case 'knn':
+                self.df[df_num.columns.tolist()] = self.knn_imputer(df_num, **kwargs)
             case 'mean':
                 for col in df_num.columns.tolist():
                     self.df[col].fillna(self.df[col].mean(), inplace=True)
