@@ -1,5 +1,6 @@
 from .data_loader import *
 import pandas as pd
+import numpy as np
 
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import MaxAbsScaler
@@ -69,7 +70,7 @@ class Scaling:
         self.df   = pd.DataFrame(scaler.fit_transform(self.df), columns=self.df.columns)
         return self.df
     
-    def min_max_scaler(self, **kwargs):
+    def min_max_scaler(self, features=[], **kwargs):
         """Scale dataframe features with MinMaxScaler transformation
         Args:
             kwargs (any): method parameters
@@ -78,9 +79,9 @@ class Scaling:
         @Author: Thomas PAYAN
         """
         print("\nMin-max scaling")
-        feature_range = kwargs.get('feature_range', (0,1))
-        scaler        = MinMaxScaler(feature_range=feature_range)
-        self.df       = pd.DataFrame(scaler.fit_transform(self.df), columns=self.df.columns)
+        feature_range     = kwargs.get('feature_range', (0,1))
+        scaler            = MinMaxScaler(feature_range=feature_range)
+        self.df[features] = scaler.fit_transform(self.df[features])
         return self.df
     
     def max_abs_scaler(self, **kwargs):
@@ -157,7 +158,7 @@ class Scaling:
         self.df = pd.DataFrame(scaler.fit_transform(self.df), columns=self.df.columns)
         return self.df
 
-    def scaling_features(self, **kwargs):
+    def scaling_features(self, features=[], **kwargs):
         """Scale dataframe features
         Args:
             kwargs (any): method parameters
@@ -171,7 +172,7 @@ class Scaling:
             case 'standard':
                 self.df = self.standard_scaler(**kwargs)
             case 'min_max':
-                self.df = self.min_max_scaler(**kwargs)
+                self.df = self.min_max_scaler(features, **kwargs)
             case 'max_abs':
                 self.df = self.max_abs_scaler(**kwargs)
             case 'robust':

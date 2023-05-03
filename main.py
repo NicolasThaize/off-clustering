@@ -51,9 +51,10 @@ def scaling(object, verbose=False):
     if verbose:    
         print("\nScaling dataframe ...")
 
-    object.convert_categorical_features_to_numeric()
+    # object.convert_categorical_features_to_numeric()
 
-    object.scaling_features()
+    df_num = object.df.select_dtypes(include=["number"]).columns.tolist()
+    object.scaling_features(df_num)
 
     return object.df
 
@@ -68,11 +69,10 @@ def outliers_managing(object, ft_exclude=[], endswith=None, verbose=False):
 
         object.df = object.correct_features_100g(ft_exclude)
 
-        # df_100g = object.get_features_endswith(endswith, ft_exclude) # Select features list
-        # tukey_outliers = object.tukey_outliers(df_100g.columns.tolist()) # Detect outliers
-
-        # object.df.loc[tukey_outliers] # Show the ouliers rows
-        # object.df.drop(tukey_outliers, inplace=True) # Drop outliers
+        # print(object.df.describe())
+        # df_100g   = object.get_features_endswith(endswith, ft_exclude) # Select features list
+        # object.df = object.remove_outliers_iforest(df_100g.columns.tolist()) # Detect outliers
+        # print(object.df.describe())
     
         return object.df
 
@@ -118,10 +118,10 @@ if __name__ == "__main__":
     print(df_train.head())
 
     # Execute scaling
-    #method      = 'min_max'
-    #obj_scaling = Scaling(df_train, method)
+    method      = 'min_max'
+    obj_scaling = Scaling(df_train, method)
 
-    #df_train = scaling(obj_scaling, verbose=True)
+    df_train = scaling(obj_scaling, verbose=True)
     print(df_train.head())
 
     df_train = binary_encode(df_train, df_train.select_dtypes('object').columns.to_list())
