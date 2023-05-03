@@ -18,23 +18,10 @@ def base_predict_and_save_results(df_train, save_name, kmeans_clusters=82, db_ep
     kmeans_predictions = kmeans.predict(df_train_num)
     df_results['cluster_label_kmeans'] = kmeans_predictions
 
-    #Spectral Clustering
-    spectral = SpectralClustering(n_clusters=3, affinity='nearest_neighbors')
-    spectral_predictions = spectral.fit_predict(df_train_num)
-    df_results['cluster_label_spectral'] = spectral_predictions
-
-    #Hierarchical Clustering
-    connectivity = kneighbors_graph(df_train_num, n_neighbors=10, include_self=False)
-    agg_clustering = AgglomerativeClustering(n_clusters=3, connectivity=connectivity)
-    hierarchical_predictions = agg_clustering.fit_predict(df_train_num)
-    df_results['cluster_label_hierarchical'] = hierarchical_predictions
-
     models_df = {
         'df': df_results,
         'kmeans_model': kmeans,
-        'dbscan_model': dbscan,
-        'spectral_model': spectral,
-        'hierarchical_model': agg_clustering
+        'dbscan_model': dbscan
     }
 
     save_model(models_df, save_name)
@@ -47,3 +34,24 @@ def base_tuning_kmeans(df):
     }
     save_metrics_to_excel(iteration_name='kmeans_tuning_1', metrics=plot_evaluation_metrics(df, model))
     save_model(value, "kmeans_k_tuned_basic_1")
+
+def base_spec_hierarchical(df, save_name):
+    # Spectral Clustering
+    spectral = SpectralClustering(n_clusters=3, affinity='nearest_neighbors')
+    spectral_predictions = spectral.fit_predict(df)
+
+    # Hierarchical Clustering
+    connectivity = kneighbors_graph(df, n_neighbors=10, include_self=False)
+    agg_clustering = AgglomerativeClustering(n_clusters=3, connectivity=connectivity)
+    hierarchical_predictions = agg_clustering.fit_predict(df)
+
+    save_metrics_to_excel(iteration_name='spectral_1', metrics=plot_evaluation_metrics(df, spectral))
+    save_metrics_to_excel(iteration_name='hierarchical_1', metrics=plot_evaluation_metrics(df, agg_clustering))
+
+    models_df = {
+        'df': df,
+        'spectral_model': spectral,
+        'hierarchical_model': agg_clustering
+    }
+
+    save_model(models_df, save_name)
