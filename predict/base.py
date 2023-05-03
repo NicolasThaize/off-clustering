@@ -1,5 +1,7 @@
 from sklearn.cluster import KMeans, DBSCAN
 from model_saver.save import save_model
+from metrics.metrics import plot_evaluation_metrics, save_metrics_to_excel
+from predict.kmeans import kmeans
 
 
 def base_predict_and_save_results(df_train, save_name, kmeans_clusters=82, db_eps=0.5, db_min_samples=5):
@@ -22,3 +24,12 @@ def base_predict_and_save_results(df_train, save_name, kmeans_clusters=82, db_ep
     }
 
     save_model(models_df, save_name)
+
+def base_tuning_kmeans(df):
+    model = kmeans(df, 21)
+    value = {
+        "df": df,
+        "kmeans_model": model
+    }
+    save_metrics_to_excel(iteration_name='kmeans_tuning_1', metrics=plot_evaluation_metrics(df, model))
+    save_model(value, "kmeans_k_tuned_basic_1")
