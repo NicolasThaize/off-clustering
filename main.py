@@ -81,7 +81,7 @@ if __name__ == "__main__":
     df_train  = get_data(file_path, nrows, True)
 
     # Execute filtering
-    endswith      = ["_t","_datetime","_url"]
+    endswith      = ["_t","_datetime","_url","_en"]
     wendswith     = ["_tags"]
     obj_filtering = Filtering(df_train, endswith, wendswith)
     df_train      = filtering(obj_filtering, verbose=True)
@@ -104,23 +104,23 @@ if __name__ == "__main__":
     #     print(feature)
 
     # Execute scaling
-    # method      = 'standard'
-    # obj_scaling = Scaling(df_train, method)
+    method      = 'min_max'
+    obj_scaling = Scaling(df_train, method)
 
-    # df_train = scaling(obj_scaling, verbose=True)
-    # print(df_train.head())
+    df_train = scaling(obj_scaling, verbose=True)
+    print(df_train.head())
 
     # Execute outliers managing
-    # endswith   = "_100g"
-    # ft_exclude = [
-    #                 'energy-kj_100g',
-    #                 'energy-kcal_100g',
-    #                 'ph_100g',
-    #                 'carbon-footprint_100g',
-    #                 'nutrition-score-fr_100g',
-    #                 'nutrition-score-uk_100g'
-    #             ]
-    # obj_outliers_managing = OutliersManaging(df_train)
+    endswith   = "_100g"
+    ft_exclude = [
+                    'energy-kj_100g',
+                    'energy-kcal_100g',
+                    'ph_100g',
+                    'carbon-footprint_100g',
+                    'nutrition-score-fr_100g',
+                    'nutrition-score-uk_100g'
+                ]
+    obj_outliers_managing = OutliersManaging(df_train)
 
-    # df_train = outliers_managing(obj_outliers_managing, ft_exclude, endswith, verbose=True)
-    # print(df_train.head())
+    df_train = outliers_managing(obj_outliers_managing, ft_exclude, endswith, verbose=True)
+    print(df_train.head())
