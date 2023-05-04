@@ -18,16 +18,16 @@ def base_predict_and_save_results(df_train, save_name, iteration_nb, kmeans_clus
     models_df = {
         'df': df_train_num,
         'kmeans_model': kmeans,
-     #   'dbscan_model': dbscan
+        'dbscan_model': dbscan
     }
 
     save_metrics_to_excel(iteration_name=f'kmeans_{iteration_nb}', metrics=plot_evaluation_metrics(df_train_num, kmeans))
-    #save_metrics_to_excel(iteration_name=f'dbscan_{iteration_nb}', metrics=plot_evaluation_metrics(df_train_num, dbscan))
+    save_metrics_to_excel(iteration_name=f'dbscan_{iteration_nb}', metrics=plot_evaluation_metrics(df_train_num, dbscan))
 
     save_model(models_df, save_name)
 
 def base_tuning_kmeans(df, save_name, iteration_nb):
-    model = kmeans(df, 21)
+    model = kmeans(df, 200)
     value = {
         "df": df,
         "kmeans_model": model
